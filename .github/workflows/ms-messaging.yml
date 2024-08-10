@@ -1,16 +1,16 @@
-name: MS Teams Deploy Card
-
-on: [push]
+name: MS Teams Notifications
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    if: github.actor != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # this is the new step
-      - uses: toko-bifrost/ms-teams-deploy-card@master #  or "./" if in a local set-up
+      - uses: dchourasia/ms-teams-notification@1.1 #  or "./" if in a local set-up
         if: always()
         with:
-          github-token: ${{ github.token }}
+          show-on-failure: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           webhook-uri: "https://prod-222.westeurope.logic.azure.com:443/workflows/1ae12d3c4bca4a28890609d2027ade22/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=TxcPEqEicVZPw-gWS5_mTz-RRRLdEgrtY0B1SvKw-hk"
